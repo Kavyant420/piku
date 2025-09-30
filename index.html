@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Piku – Maximum Security IT Solutions</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background: #000;
+    }
+    
+    /* Animated gradient background */
+    .hero-bg {
+      background: linear-gradient(135deg, #000 0%, #1a0000 50%, #000 100%);
+      background-size: 200% 200%;
+      animation: gradientShift 15s ease infinite;
+    }
+    
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    
+    /* Fade in animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    * { 
+    -webkit-tap-highlight-color: transparent; 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+} 
+
+input:focus, select:focus, textarea:focus, button:focus { 
+    outline: none; 
+    box-shadow: none; 
+    -webkit-box-shadow: none; 
+}
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Red glow effects */
+    .red-glow {
+      box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
+      transition: box-shadow 0.3s ease;
+    }
+    .red-glow:hover {
+      box-shadow: 0 0 30px rgba(220, 38, 38, 0.6);
+    }
+    
+    /* Card hover effects */
+    .product-card {
+      transition: all 0.3s ease;
+      border: 1px solid #1a1a1a;
+    }
+    .product-card:hover {
+      transform: translateY(-8px);
+      border-color: #dc2626;
+      box-shadow: 0 10px 40px rgba(220, 38, 38, 0.4);
+    }
+    
+    /* Stats counter animation */
+    .stat-number {
+      font-variant-numeric: tabular-nums;
+    }
+    
+    /* Preview overlay */
+    .preview-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .preview-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .preview-box {
+      width: 90%;
+      max-width: 1000px;
+      height: 70vh;
+      background: #0a0a0a;
+      border: 2px solid #dc2626;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(220,38,38,0.6);
+      animation: zoomIn 0.3s ease;
+      position: relative;
+    }
+    .preview-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      z-index: 10;
+      background: #dc2626;
+      color: white;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .preview-close:hover {
+      background: #b91c1c;
+      transform: rotate(90deg);
+    }
+    
+    @keyframes zoomIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    
+    /* Feature icons */
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #dc2626, #991b1b);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      transition: transform 0.3s ease;
+    }
+    .feature-icon:hover {
+      transform: scale(1.1) rotate(5deg);
+    }
+    
+    /* Pulse animation for trending badge */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    .trending-badge {
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    /* Mobile menu */
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .mobile-menu.active {
+      max-height: 300px;
+    }
+  </style>
+</head>
+<body class="bg-black text-gray-200 font-sans antialiased">
+
+  <!-- Header -->
+  <header class="bg-black border-b border-red-900 sticky top-0 z-50 backdrop-blur-sm bg-opacity-95">
+    <div class="max-w-7xl mx-auto px-6 py-4">
+      <div class="flex justify-between items-center">
+        <h1 class="text-2xl md:text-3xl font-bold text-red-500 tracking-tight">PIKU</h1>
+        
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex space-x-8">
+          <a href="#about" class="hover:text-red-500 transition-colors">About</a>
+          <a href="#features" class="hover:text-red-500 transition-colors">Features</a>
+          <a href="#products" class="hover:text-red-500 transition-colors">Products</a>
+          <a href="#stats" class="hover:text-red-500 transition-colors">Stats</a>
+          <a href="#contact" class="hover:text-red-500 transition-colors">Contact</a>
+        </nav>
+        
+        <!-- Mobile Menu Button -->
+        <button id="mobileMenuBtn" class="md:hidden text-red-500 focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Mobile Nav -->
+      <nav id="mobileMenu" class="mobile-menu md:hidden">
+        <div class="flex flex-col space-y-4 pt-4">
+          <a href="#about" class="hover:text-red-500 transition-colors">About</a>
+          <a href="#features" class="hover:text-red-500 transition-colors">Features</a>
+          <a href="#products" class="hover:text-red-500 transition-colors">Products</a>
+          <a href="#stats" class="hover:text-red-500 transition-colors">Stats</a>
+          <a href="#contact" class="hover:text-red-500 transition-colors">Contact</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero-bg text-center py-24 md:py-32 px-6 fade-in">
+    <div class="max-w-4xl mx-auto">
+      <div class="inline-block mb-4 px-4 py-2 bg-red-900 bg-opacity-30 border border-red-800 rounded-full">
+        <span class="text-red-400 text-sm font-semibold">Enterprise-Grade Security</span>
+      </div>
+      <h2 class="text-4xl md:text-6xl font-extrabold text-red-500 mb-6 leading-tight">
+        Maximum Security,<br/>Always Free
+      </h2>
+      <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-400 mb-10 leading-relaxed">
+        At <strong class="text-red-400">Piku</strong>, we redefine digital security with cutting-edge anonymization technology. 
+        Every interaction generates a fresh anonymous identity, ensuring your data remains completely untraceable.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#products" class="px-8 py-4 bg-red-600 text-white font-semibold rounded-xl shadow-lg hover:bg-red-700 red-glow transition">
+          Explore Products
+        </a>
+        <a href="#features" class="px-8 py-4 bg-transparent border-2 border-red-600 text-red-500 font-semibold rounded-xl hover:bg-red-600 hover:text-white transition">
+          Learn More
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="max-w-7xl mx-auto py-20 px-6 fade-in">
+    <h3 class="text-3xl md:text-4xl font-bold text-red-500 mb-12 text-center">Why Choose PiKU?</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <div class="text-center p-6">
+        <div class="feature-icon">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+          </svg>
+        </div>
+        <h4 class="text-xl font-bold text-red-400 mb-3">Zero-Trust Architecture</h4>
+        <p class="text-gray-400">Military-grade encryption with continuous identity rotation for unmatched privacy.</p>
+      </div>
+      
+      <div class="text-center p-6">
+        <div class="feature-icon">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+        </div>
+        <h4 class="text-xl font-bold text-red-400 mb-3">Lightning Fast</h4>
+        <p class="text-gray-400">Optimized infrastructure delivering sub-millisecond response times globally.</p>
+      </div>
+      
+      <div class="text-center p-6">
+        <div class="feature-icon">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+          </svg>
+        </div>
+        <h4 class="text-xl font-bold text-red-400 mb-3">100% Free Forever</h4>
+        <p class="text-gray-400">Enterprise features at zero cost. No hidden fees, no premium tiers, no compromises.</p>
+      </div>
+      
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section id="stats" class="bg-gradient-to-b from-black via-gray-900 to-black py-20 fade-in">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div>
+          <div class="text-4xl md:text-5xl font-bold text-red-500 mb-2 stat-number" data-target="99.99">0</div>
+          <div class="text-gray-400 text-sm md:text-base">Uptime %</div>
+        </div>
+        <div>
+          <div class="text-4xl md:text-5xl font-bold text-red-500 mb-2 stat-number" data-target="500">0</div>
+          <div class="text-gray-400 text-sm md:text-base">K+ Users</div>
+        </div>
+        <div>
+          <div class="text-4xl md:text-5xl font-bold text-red-500 mb-2 stat-number" data-target="150">0</div>
+          <div class="text-gray-400 text-sm md:text-base">Countries</div>
+        </div>
+        <div>
+          <div class="text-4xl md:text-5xl font-bold text-red-500 mb-2 stat-number" data-target="24">0</div>
+          <div class="text-gray-400 text-sm md:text-base">7 Support</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="max-w-6xl mx-auto py-20 px-6 fade-in">
+    <h3 class="text-3xl md:text-4xl font-bold text-red-500 mb-8 text-center">About Piku</h3>
+    <div class="bg-gray-900 bg-opacity-50 border border-red-900 rounded-2xl p-8 md:p-12">
+      <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-6">
+        Founded by cybersecurity experts, PiKU represents the next generation of digital protection. 
+        We believe security shouldn't be a luxury—it should be a fundamental right.
+      </p>
+      <p class="text-lg md:text-xl text-gray-300 leading-relaxed">
+        Our proprietary anonymization technology regenerates user identities in real-time, making tracking impossible. 
+        Combined with quantum-resistant encryption and distributed architecture, Piku delivers uncompromising protection 
+        for individuals and enterprises alike.
+      </p>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <section id="products" class="bg-black py-20 fade-in">
+  <div class="max-w-7xl mx-auto px-6">
+    <h3 class="text-3xl md:text-4xl font-bold text-red-500 mb-4 text-center">Our Products</h3>
+    <p class="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
+      Cutting-edge security solutions designed for the modern digital landscape
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+
+      <!-- Pikuflix -->
+      <div class="product-card relative p-8 bg-gray-900 rounded-2xl cursor-pointer" data-url="https://pikuflix.vercel.app/">
+        <span class="trending-badge absolute top-4 right-4 text-xs font-bold bg-red-600 text-white px-3 py-1 rounded-full">TRENDING</span>
+        <h4 class="text-2xl font-bold text-red-400 mb-3">Pikuflix</h4>
+        <p class="text-gray-400 mb-4">Next-gen streaming platform with total privacy.</p>
+        <div class="flex items-center text-red-500 font-semibold">
+          <span>Explore</span>
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </div>
+      </div>
+
+      <!-- PikAI -->
+      <div class="product-card relative p-8 bg-gray-900 rounded-2xl cursor-pointer" data-url="https://pikai.vercel.app/">
+        <span class="trending-badge absolute top-4 right-4 text-xs font-bold bg-red-600 text-white px-3 py-1 rounded-full">TRENDING</span>
+        <h4 class="text-2xl font-bold text-red-400 mb-3">PikAI (beta)</h4>
+        <p class="text-gray-400 mb-4">AI designed for privacy, anonymity, and self-learning.</p>
+        <div class="flex items-center text-red-500 font-semibold">
+          <span>Explore</span>
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Pikmaps -->
+      <div class="product-card p-8 bg-gray-900 rounded-2xl cursor-pointer" data-url="https://pikmaps.vercel.app/">
+        <h4 class="text-2xl font-bold text-red-400 mb-3">Pikmaps (beta)</h4>
+        <p class="text-gray-400 mb-4">Anonymous navigation with encrypted route storage.</p>
+        <div class="flex items-center text-red-500 font-semibold">
+          <span>Explore</span>
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Coming Soon 1 -->
+      <div class="product-card p-8 bg-gray-800 rounded-2xl opacity-50 cursor-not-allowed">
+        <h4 class="text-2xl font-bold text-red-400 mb-3">Coming Soon</h4>
+        <p class="text-gray-500 mb-4">Stay tuned for the next innovation.</p>
+        <div class="flex items-center text-gray-600 font-semibold">
+          <span>Locked</span>
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Coming Soon 2 -->
+      <div class="product-card p-8 bg-gray-800 rounded-2xl opacity-50 cursor-not-allowed">
+        <h4 class="text-2xl font-bold text-red-400 mb-3">Coming Soon</h4>
+        <p class="text-gray-500 mb-4">Another secure product on its way.</p>
+        <div class="flex items-center text-gray-600 font-semibold">
+          <span>Locked</span>
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Coming Soon 3 -->
+      <div class="product-card p-8 bg-gray-800 rounded-2xl opacity-50 cursor-not-allowed">
+        <h4 class="text-2xl font-bold text-red-400 mb-3">Coming Soon</h4>
+        <p class="text-gray-500 mb-4">Innovating new ways to protect your privacy.</p>
+        <div class="flex items-center text-gray-600 font-semibold">
+          <span>Locked</span>
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+  <!-- Contact -->
+  <section id="contact" class="py-20 bg-gradient-to-b from-black via-gray-900 to-black fade-in">
+    <div class="max-w-4xl mx-auto text-center px-6">
+      <h3 class="text-3xl md:text-4xl font-bold text-red-500 mb-6">Get In Touch</h3>
+      <p class="text-gray-400 mb-10 text-lg">
+        Ready to elevate your security? Our team is available 24/7 to assist you.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+        <a href="mailto:info@piku.com" class="px-8 py-4 bg-red-600 text-white font-semibold rounded-xl shadow-lg hover:bg-red-700 red-glow transition inline-flex items-center justify-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+          </svg>
+          info@piku.com
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-black py-8 text-center text-gray-500 text-sm border-t border-red-900">
+    <div class="max-w-7xl mx-auto px-6">
+      <p class="mb-4">© 2025 Piku. All rights reserved. | Securing the digital future, one identity at a time.</p>
+      <div class="flex justify-center space-x-6 text-xs">
+        <a href="#" class="hover:text-red-500 transition">Privacy Policy</a>
+        <a href="#" class="hover:text-red-500 transition">Terms of Service</a>
+        <a href="#" class="hover:text-red-500 transition">Security</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Preview Overlay -->
+  <div id="previewOverlay" class="preview-overlay">
+    <div class="preview-box">
+      <button class="preview-close" id="closeBtn">×</button>
+      <iframe id="previewFrame" src="" class="w-full h-full border-0"></iframe>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Fade-in observer
+    const faders = document.querySelectorAll('.fade-in');
+    const appearOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
+    const appearOnScroll = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, appearOptions);
+    faders.forEach(fader => appearOnScroll.observe(fader));
+
+    // Stats counter animation
+    const animateCounters = () => {
+      const counters = document.querySelectorAll('.stat-number');
+      counters.forEach(counter => {
+        const target = parseFloat(counter.getAttribute('data-target'));
+        const duration = 2000;
+        const increment = target / (duration / 16);
+        let current = 0;
+        
+        const updateCounter = () => {
+          current += increment;
+          if (current < target) {
+            counter.textContent = Math.floor(current * 100) / 100;
+            requestAnimationFrame(updateCounter);
+          } else {
+            counter.textContent = target;
+          }
+        };
+        updateCounter();
+      });
+    };
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounters();
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    
+    const statsSection = document.getElementById('stats');
+    if (statsSection) statsObserver.observe(statsSection);
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('active');
+    });
+
+    // Close mobile menu on link click
+    document.querySelectorAll('#mobileMenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+      });
+    });
+
+    // Preview overlay logic
+    const overlay = document.getElementById('previewOverlay');
+    const frame = document.getElementById('previewFrame');
+    const closeBtn = document.getElementById('closeBtn');
+
+    document.querySelectorAll('.product-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        frame.src = card.dataset.url;
+        overlay.classList.add('active');
+      });
+
+      card.addEventListener('mouseleave', () => {
+        setTimeout(() => {
+          if (!overlay.matches(':hover')) {
+            overlay.classList.remove('active');
+            frame.src = "";
+          }
+        }, 100);
+      });
+
+      card.addEventListener('click', () => {
+        window.open(card.dataset.url, '_blank');
+        overlay.classList.remove('active');
+        frame.src = "";
+      });
+    });
+
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) {
+        overlay.classList.remove('active');
+        frame.src = "";
+      }
+    });
+
+    closeBtn.addEventListener('click', () => {
+      overlay.classList.remove('active');
+      frame.src = "";
+    });
+
+    // Smooth close on mouseleave
+    overlay.addEventListener('mouseleave', () => {
+      overlay.classList.remove('active');
+      frame.src = "";
+    });
+  </script>
+
+</body>
+</html>
